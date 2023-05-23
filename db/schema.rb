@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_23_225330) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_23_230721) do
+  create_table "film_planet", force: :cascade do |t|
+    t.integer "film_id", null: false
+    t.integer "planet_id", null: false
+    t.index ["film_id"], name: "index_film_planet_on_film_id"
+    t.index ["planet_id"], name: "index_film_planet_on_planet_id"
+  end
+
   create_table "films", force: :cascade do |t|
     t.string "title"
     t.integer "episode_id"
@@ -50,4 +57,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_23_225330) do
     t.datetime "edited", precision: nil, default: -> { "datetime('now')" }
   end
 
+  add_foreign_key "film_planet", "films"
+  add_foreign_key "film_planet", "planets"
 end
