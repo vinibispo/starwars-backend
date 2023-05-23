@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_23_230721) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_23_231842) do
+  create_table "film_people", force: :cascade do |t|
+    t.integer "film_id", null: false
+    t.integer "people_id"
+    t.index ["film_id"], name: "index_film_people_on_film_id"
+  end
+
   create_table "film_planet", force: :cascade do |t|
     t.integer "film_id", null: false
     t.integer "planet_id", null: false
@@ -57,6 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_23_230721) do
     t.datetime "edited", precision: nil, default: -> { "datetime('now')" }
   end
 
+  add_foreign_key "film_people", "films"
   add_foreign_key "film_planet", "films"
   add_foreign_key "film_planet", "planets"
 end
