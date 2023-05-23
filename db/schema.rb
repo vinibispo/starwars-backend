@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_23_231842) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_23_234821) do
   create_table "film_people", force: :cascade do |t|
     t.integer "film_id", null: false
     t.integer "people_id"
@@ -45,8 +45,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_23_231842) do
     t.string "mass"
     t.string "skin_color"
     t.integer "homeworld"
-    t.datetime "created", precision: nil, default: -> { "datetime('now')" }
-    t.datetime "edited", precision: nil, default: -> { "datetime('now')" }
+    t.datetime "created", precision: nil
+    t.datetime "edited", precision: nil
   end
 
   create_table "planets", force: :cascade do |t|
@@ -64,6 +64,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_23_231842) do
   end
 
   add_foreign_key "film_people", "films"
+  add_foreign_key "film_people", "people", column: "people_id"
   add_foreign_key "film_planet", "films"
   add_foreign_key "film_planet", "planets"
+  add_foreign_key "people", "planets", column: "homeworld"
 end
