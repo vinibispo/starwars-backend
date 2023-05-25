@@ -8,4 +8,8 @@ class Planet < ApplicationRecord
   validates :climate, presence: true
   validates :terrain, presence: true
   validates :surface_water, presence: true
+
+  has_many :residents, class_name: 'Person', foreign_key: 'homeworld'
+  has_many :film_planets, class_name: 'Film::Planet'
+  has_many :films, through: :film_planets
 end

@@ -12,4 +12,10 @@ RSpec.describe Planet, type: :model do
     it { should validate_presence_of(:terrain) }
     it { should validate_presence_of(:surface_water) }
   end
+
+  context 'associations' do
+    it { should have_many(:residents).class_name('Person').with_foreign_key('homeworld') }
+    it { should have_many(:film_planets).class_name('Film::Planet') }
+    it { should have_many(:films).through(:film_planets) }
+  end
 end
