@@ -31,6 +31,19 @@ class PeopleController < ApplicationController
     end
   end
 
+  def update
+    person = Person.find_by(id: params[:id])
+    if person
+      if person.update(person_params)
+        render json: person
+      else
+        render json: { errors: person.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: 'Person not found' }, status: :not_found
+    end
+  end
+
   private
 
   def person_params

@@ -94,4 +94,53 @@ RSpec.describe 'People', type: :request do
       expect(response.body).to eq({ errors: ["Homeworld can't be blank"] }.to_json)
     end
   end
+
+  describe 'PUT update' do
+    it 'returns http success' do
+      planet = FactoryBot.create(:planet)
+      person = FactoryBot.create(:person, homeworld: planet.id)
+
+      params = { person: { name: 'New Name' } }
+      put(person_path(person), params:)
+
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'returns the correct person' do
+      planet = FactoryBot.create(:planet)
+      person = FactoryBot.create(:person, homeworld: planet.id)
+
+      params = { person: { name: 'New Name' } }
+      put(person_path(person), params:)
+
+      expect(response.body).to include('New Name')
+    end
+
+    it 'returns a 422 when the person is invalid' do
+      planet = FactoryBot.create(:planet)
+      person = FactoryBot.create(:person, homeworld: planet.id)
+
+      params = { person: { name: '' } }
+      put(person_path(person), params:)
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it 'returns an error message when the person is invalid' do
+      planet = FactoryBot.create(:planet)
+      person = FactoryBot.create(:person, homeworld: planet.id)
+
+      params = { person: FactoryBot.attributes_for(:person) }
+      put(person_path(person), params:)
+
+      expect(response.body).to eq({ errors: ["Homeworld can't be blank"] }.to_json)
+    end
+
+    it 'returns a 404 when the person does not exist' do
+      params = { person: { name: 'New Name' } }
+      put(person_path(1), params:)
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 end
