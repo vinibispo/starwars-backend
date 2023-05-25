@@ -51,4 +51,35 @@ RSpec.describe 'Films', type: :request do
       expect(response.body).to eq({ error: 'Film not found' }.to_json)
     end
   end
+
+  describe 'POST create' do
+    it 'returns http success' do
+      post films_path, params: { film: FactoryBot.attributes_for(:film) }
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'creates a new film' do
+      expect do
+        post films_path, params: { film: FactoryBot.attributes_for(:film) }
+      end.to change(Film, :count).by(1)
+    end
+
+    it 'returns the created film' do
+      post films_path, params: { film: FactoryBot.attributes_for(:film) }
+
+      expect(response.body).to include(Film.last.title)
+    end
+
+    it 'returns a 422 when the film is invalid' do
+      post films_path, params: { film: { title: '' } }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it 'returns an error message when the film is invalid' do
+      post films_path, params: { film: FactoryBot.attributes_for(:film, title: '') }
+
+      expect(response.body).to eq({ errors: ["Title can't be blank"] }.to_json)
+    end
+  end
 end

@@ -19,4 +19,26 @@ class FilmsController < ApplicationController
       render json: { error: 'Film not found' }, status: :not_found
     end
   end
+
+  def create
+    film = Film.new(film_params)
+    if film.save
+      render json: film, status: :created
+    else
+      render json: { errors: film.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def film_params
+    params.require(:film).permit(
+      :title,
+      :episode_id,
+      :opening_crawl,
+      :director,
+      :producer,
+      :release_date
+    )
+  end
 end
