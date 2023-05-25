@@ -9,4 +9,12 @@ RSpec.describe Film, type: :model do
     it { should validate_presence_of(:producer) }
     it { should validate_presence_of(:release_date) }
   end
+
+  context 'associations' do
+    it { should have_many(:characters).through(:cast) }
+    it { should have_many(:planets).through(:scenarios) }
+
+    it { should have_many(:cast) }
+    it { should have_many(:scenarios) }
+  end
 end

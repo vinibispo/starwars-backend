@@ -5,4 +5,10 @@ class Film < ApplicationRecord
   validates :director, presence: true
   validates :producer, presence: true
   validates :release_date, presence: true
+
+  has_many :scenarios, class_name: 'Planet', foreign_key: 'film_id'
+  has_many :planets, class_name: '::Planet', through: :scenarios
+
+  has_many :cast, class_name: 'Person', foreign_key: 'film_id'
+  has_many :characters, class_name: '::Person', through: :cast, source: :person
 end
