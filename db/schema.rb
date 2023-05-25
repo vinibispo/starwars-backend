@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_23_234821) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_25_182837) do
   create_table "film_people", force: :cascade do |t|
     t.integer "film_id", null: false
     t.integer "people_id"
@@ -45,7 +45,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_23_234821) do
     t.string "mass"
     t.string "skin_color"
     t.integer "homeworld"
-    t.datetime "created", precision: nil
+    t.datetime "created", precision: nil, default: -> { "datetime('now')" }
     t.datetime "edited", precision: nil
   end
 
