@@ -82,4 +82,52 @@ RSpec.describe 'Films', type: :request do
       expect(response.body).to eq({ errors: ["Title can't be blank"] }.to_json)
     end
   end
+
+  describe 'PUT update' do
+    it 'returns http success' do
+      film = FactoryBot.create(:film)
+      put film_path(film), params: { film: FactoryBot.attributes_for(:film) }
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'updates the film' do
+      film = FactoryBot.create(:film)
+      put film_path(film), params: { film: FactoryBot.attributes_for(:film, title: 'New Title') }
+
+      expect(film.reload.title).to eq('New Title')
+    end
+
+    it 'returns the updated film' do
+      film = FactoryBot.create(:film)
+      put film_path(film), params: { film: FactoryBot.attributes_for(:film, title: 'New Title') }
+
+      expect(response.body).to include('New Title')
+    end
+
+    it 'returns a 422 when the film is invalid' do
+      film = FactoryBot.create(:film)
+      put film_path(film), params: { film: { title: '' } }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it 'returns an error message when the film is invalid' do
+      film = FactoryBot.create(:film)
+      put film_path(film), params: { film: FactoryBot.attributes_for(:film, title: '') }
+
+      expect(response.body).to eq({ errors: ["Title can't be blank"] }.to_json)
+    end
+
+    it 'returns a 404 when the film is not found' do
+      put film_path(1), params: { film: FactoryBot.attributes_for(:film) }
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it 'returns an error message when the film is not found' do
+      put film_path(1), params: { film: FactoryBot.attributes_for(:film) }
+
+      expect(response.body).to eq({ error: 'Film not found' }.to_json)
+    end
+  end
 end

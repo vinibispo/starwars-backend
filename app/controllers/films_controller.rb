@@ -29,6 +29,19 @@ class FilmsController < ApplicationController
     end
   end
 
+  def update
+    film = Film.find_by(id: params[:id])
+    if film.present?
+      if film.update(film_params)
+        render json: film
+      else
+        render json: { errors: film.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: 'Film not found' }, status: :not_found
+    end
+  end
+
   private
 
   def film_params
