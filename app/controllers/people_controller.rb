@@ -12,4 +12,13 @@ class PeopleController < ApplicationController
     end
     render json: people
   end
+
+  def show
+    person = Person.find_by(id: params[:id])
+    if person
+      render json: person
+    else
+      render json: { error: 'Person not found' }, status: :not_found
+    end
+  end
 end
