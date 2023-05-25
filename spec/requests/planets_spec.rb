@@ -51,4 +51,35 @@ RSpec.describe 'Planets', type: :request do
       expect(response.body).to eq({ error: 'Planet not found' }.to_json)
     end
   end
+
+  describe 'POST create' do
+    it 'returns http success' do
+      post planets_path, params: { planet: FactoryBot.attributes_for(:planet) }
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'creates a new planet' do
+      expect do
+        post planets_path, params: { planet: FactoryBot.attributes_for(:planet) }
+      end.to change(Planet, :count).by(1)
+    end
+
+    it 'returns the new planet' do
+      post planets_path, params: { planet: FactoryBot.attributes_for(:planet) }
+
+      expect(response.body).to eq(Planet.last.to_json)
+    end
+
+    it 'returns a 422 if the planet is not valid' do
+      post planets_path, params: { planet: FactoryBot.attributes_for(:planet, name: nil) }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it 'returns an error message if the planet is not valid' do
+      post planets_path, params: { planet: FactoryBot.attributes_for(:planet, name: nil) }
+
+      expect(response.body).to eq({ errors: ["Name can't be blank"] }.to_json)
+    end
+  end
 end
