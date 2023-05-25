@@ -130,4 +130,31 @@ RSpec.describe 'Films', type: :request do
       expect(response.body).to eq({ error: 'Film not found' }.to_json)
     end
   end
+
+  describe 'DELETE destroy' do
+    it 'returns http success' do
+      film = FactoryBot.create(:film)
+      delete film_path(film)
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'deletes the film' do
+      film = FactoryBot.create(:film)
+      expect do
+        delete film_path(film)
+      end.to change(Film, :count).by(-1)
+    end
+
+    it 'returns a 404 when the film is not found' do
+      delete film_path(1)
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it 'returns an error message when the film is not found' do
+      delete film_path(1)
+
+      expect(response.body).to eq({ error: 'Film not found' }.to_json)
+    end
+  end
 end
