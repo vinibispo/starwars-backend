@@ -143,4 +143,27 @@ RSpec.describe 'People', type: :request do
       expect(response).to have_http_status(:not_found)
     end
   end
+
+  describe 'DELETE destroy' do
+    it 'returns http no_content' do
+      planet = FactoryBot.create(:planet)
+      person = FactoryBot.create(:person, homeworld: planet.id)
+
+      delete person_path(person)
+
+      expect(response).to have_http_status(:no_content)
+    end
+
+    it 'returns a 404 when the person does not exist' do
+      delete person_path(1)
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it 'returns an error message when the person does not exist' do
+      delete person_path(1)
+
+      expect(response.body).to eq({ error: 'Person not found' }.to_json)
+    end
+  end
 end

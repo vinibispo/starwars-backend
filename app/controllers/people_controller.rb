@@ -44,6 +44,16 @@ class PeopleController < ApplicationController
     end
   end
 
+  def destroy
+    person = Person.find_by(id: params[:id])
+    if person
+      person.destroy
+      head :no_content
+    else
+      render json: { error: 'Person not found' }, status: :not_found
+    end
+  end
+
   private
 
   def person_params
