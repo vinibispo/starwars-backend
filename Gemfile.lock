@@ -150,6 +150,10 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
+    ransack (4.0.0)
+      activerecord (>= 6.1.5)
+      activesupport (>= 6.1.5)
+      i18n
     reline (0.3.4)
       io-console (~> 0.5)
     rspec-core (3.12.2)
@@ -192,6 +196,7 @@ DEPENDENCIES
   pagy (~> 6.0)
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.3)
+  ransack
   rspec-rails (~> 6.0.0)
   shoulda-matchers (~> 5.0)
   sqlite3 (~> 1.4)
