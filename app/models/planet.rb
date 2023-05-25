@@ -8,8 +8,4 @@ class Planet < ApplicationRecord
   validates :climate, presence: true
   validates :terrain, presence: true
   validates :surface_water, presence: true
-
-  def self.ransackable_attributes(_auth_object = nil)
-    column_names - %w[created edited]
-  end
 end
