@@ -30,6 +30,29 @@ class PlanetsController < ApplicationController
     end
   end
 
+  def update
+    planet = Planet.find_by(id: params[:id])
+    if planet
+      if planet.update(planet_params)
+        render json: planet
+      else
+        render json: { errors: planet.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: 'Planet not found' }, status: :not_found
+    end
+  end
+
+  def destroy
+    planet = Planet.find_by(id: params[:id])
+    if planet
+      planet.destroy
+      head :no_content
+    else
+      render json: { error: 'Planet not found' }, status: :not_found
+    end
+  end
+
   private
 
   def planet_params
