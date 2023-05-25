@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'People', type: :request do
@@ -54,6 +56,42 @@ RSpec.describe 'People', type: :request do
       get person_path(1)
 
       expect(response.body).to eq({ error: 'Person not found' }.to_json)
+    end
+  end
+
+  describe 'POST create' do
+    it 'returns http success' do
+      planet = FactoryBot.create(:planet)
+
+      params = { person: FactoryBot.attributes_for(:person, homeworld: planet.id) }
+      post(people_path, params:)
+
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'returns the correct person' do
+      planet = FactoryBot.create(:planet)
+      params = { person: FactoryBot.attributes_for(:person, homeworld: planet.id) }
+
+      post(people_path, params:)
+
+      expect(response.body).to eq(Person.last.to_json)
+    end
+
+    it 'returns a 422 when the person is invalid' do
+      person = FactoryBot.build(:person)
+
+      post people_path, params: { person: person.attributes }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it 'returns an error message when the person is invalid' do
+      person = FactoryBot.build(:person)
+
+      post people_path, params: { person: person.attributes }
+
+      expect(response.body).to eq({ errors: ["Homeworld can't be blank"] }.to_json)
     end
   end
 end
