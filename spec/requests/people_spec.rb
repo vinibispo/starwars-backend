@@ -91,7 +91,7 @@ RSpec.describe 'People', type: :request do
 
       post people_path, params: { person: person.attributes }
 
-      expect(response.body).to eq({ errors: ["Homeworld can't be blank"] }.to_json)
+      expect(response.body).to eq({ errors: ["Homeworld can't be blank", 'Planet must exist'] }.to_json)
     end
   end
 
@@ -133,7 +133,7 @@ RSpec.describe 'People', type: :request do
       params = { person: FactoryBot.attributes_for(:person) }
       put(person_path(person), params:)
 
-      expect(response.body).to eq({ errors: ["Homeworld can't be blank"] }.to_json)
+      expect(response.body).to eq({ errors: ["Homeworld can't be blank", 'Planet must exist'] }.to_json)
     end
 
     it 'returns a 404 when the person does not exist' do
