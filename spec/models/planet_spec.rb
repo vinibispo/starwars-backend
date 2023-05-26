@@ -14,7 +14,7 @@ RSpec.describe Planet, type: :model do
   end
 
   context 'associations' do
-    it { should have_many(:residents).class_name('Person').with_foreign_key('homeworld') }
+    it { should have_many(:residents).class_name('Character').with_foreign_key('homeworld') }
     it { should have_many(:scenarios).class_name('Film::Planet') }
     it { should have_many(:films).through(:scenarios) }
   end

@@ -9,7 +9,7 @@ class Planet < ApplicationRecord
   validates :terrain, presence: true
   validates :surface_water, presence: true
 
-  has_many :residents, class_name: 'Person', foreign_key: 'homeworld'
+  has_many :residents, class_name: 'Character', foreign_key: 'homeworld'
   has_many :scenarios, class_name: 'Film::Planet', foreign_key: 'planet_id'
   has_many :films, through: :scenarios
 end

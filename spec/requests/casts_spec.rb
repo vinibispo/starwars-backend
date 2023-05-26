@@ -7,19 +7,19 @@ RSpec.describe 'Casts', type: :request do
     it 'creates a new cast' do
       film = FactoryBot.create(:film)
       planet = FactoryBot.create(:planet)
-      person = FactoryBot.create(:person, homeworld: planet.id)
+      character = FactoryBot.create(:character, homeworld: planet.id)
 
       expect do
-        post casts_path, params: { cast: { film_id: film.id, person_id: person.id } }
-      end.to change(Film::Person, :count).by(1)
+        post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
+      end.to change(Film::Character, :count).by(1)
     end
 
     it 'returns http success' do
       film = FactoryBot.create(:film)
       planet = FactoryBot.create(:planet)
-      person = FactoryBot.create(:person, homeworld: planet.id)
+      character = FactoryBot.create(:character, homeworld: planet.id)
 
-      post casts_path, params: { cast: { film_id: film.id, person_id: person.id } }
+      post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
 
       expect(response).to have_http_status(:success)
     end
@@ -27,23 +27,23 @@ RSpec.describe 'Casts', type: :request do
     it 'returns the created cast' do
       film = FactoryBot.create(:film)
       planet = FactoryBot.create(:planet)
-      person = FactoryBot.create(:person, homeworld: planet.id)
+      character = FactoryBot.create(:character, homeworld: planet.id)
 
-      post casts_path, params: { cast: { film_id: film.id, person_id: person.id } }
+      post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
 
-      expect(response.body).to eq(Film::Person.last.to_json)
+      expect(response.body).to eq(Film::Character.last.to_json)
     end
 
     it 'returns http unprocessable entity' do
-      post casts_path, params: { cast: { film_id: nil, person_id: nil } }
+      post casts_path, params: { cast: { film_id: nil, character_id: nil } }
 
       expect(response).to have_http_status(:unprocessable_entity)
     end
 
     it 'returns the errors' do
-      post casts_path, params: { cast: { film_id: nil, person_id: nil } }
+      post casts_path, params: { cast: { film_id: nil, character_id: nil } }
 
-      expect(response.body).to eq({ errors: ['Film must exist', 'Person must exist'] }.to_json)
+      expect(response.body).to eq({ errors: ['Film must exist', 'Character must exist'] }.to_json)
     end
 
     it 'returns bad request' do
@@ -57,19 +57,19 @@ RSpec.describe 'Casts', type: :request do
     it 'deletes a cast' do
       film = FactoryBot.create(:film)
       planet = FactoryBot.create(:planet)
-      person = FactoryBot.create(:person, homeworld: planet.id)
-      cast = FactoryBot.create(:cast, film:, person:)
+      character = FactoryBot.create(:character, homeworld: planet.id)
+      cast = FactoryBot.create(:cast, film:, character:)
 
       expect do
         delete cast_path(cast)
-      end.to change(Film::Person, :count).by(-1)
+      end.to change(Film::Character, :count).by(-1)
     end
 
     it 'returns http success' do
       film = FactoryBot.create(:film)
       planet = FactoryBot.create(:planet)
-      person = FactoryBot.create(:person, homeworld: planet.id)
-      cast = FactoryBot.create(:cast, film:, person:)
+      character = FactoryBot.create(:character, homeworld: planet.id)
+      cast = FactoryBot.create(:cast, film:, character:)
 
       delete cast_path(cast)
 

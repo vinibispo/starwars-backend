@@ -1,8 +1,8 @@
 class CastsController < ApplicationController
   def create
-    input = { film_id: cast_params[:film_id], people_id: cast_params[:person_id] }
+    input = { film_id: cast_params[:film_id], people_id: cast_params[:character_id] }
 
-    cast = Film::Person.new(input)
+    cast = Film::Character.new(input)
     if cast.save
       render json: cast, status: :created
     else
@@ -11,7 +11,7 @@ class CastsController < ApplicationController
   end
 
   def destroy
-    cast = Film::Person.find_by(id: params[:id])
+    cast = Film::Character.find_by(id: params[:id])
     if cast
       cast.destroy
       head :no_content
@@ -23,6 +23,6 @@ class CastsController < ApplicationController
   private
 
   def cast_params
-    params.require(:cast).permit(:film_id, :person_id)
+    params.require(:cast).permit(:film_id, :character_id)
   end
 end

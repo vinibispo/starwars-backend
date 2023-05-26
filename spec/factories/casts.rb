@@ -1,6 +1,6 @@
 FactoryBot.define do
-  factory :cast, class: 'Film::Person' do
+  factory :cast, class: 'Film::Character' do
     association :film
-    association :person
+    association :character
   end
 end

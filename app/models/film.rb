@@ -9,6 +9,6 @@ class Film < ApplicationRecord
   has_many :scenarios, class_name: 'Planet', foreign_key: 'film_id'
   has_many :planets, class_name: '::Planet', through: :scenarios
 
-  has_many :cast, class_name: 'Person', foreign_key: 'film_id'
-  has_many :characters, class_name: '::Person', through: :cast, source: :person
+  has_many :cast, class_name: 'Character', foreign_key: 'film_id'
+  has_many :characters, class_name: '::Character', through: :cast, source: :character
 end

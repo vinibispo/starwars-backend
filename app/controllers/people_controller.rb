@@ -6,58 +6,58 @@ class PeopleController < ApplicationController
 
   def index
     if params[:q].present?
-      @pagy, people = pagy(Person.ransack(name_cont: params[:q]).result(distinct: true))
+      @pagy, people = pagy(Character.ransack(name_cont: params[:q]).result(distinct: true))
     else
-      @pagy, people = pagy(Person.all)
+      @pagy, people = pagy(Character.all)
     end
     render json: people
   end
 
   def show
-    person = Person.find_by(id: params[:id])
-    if person
-      render json: person
+    character = Character.find_by(id: params[:id])
+    if character
+      render json: character
     else
-      render json: { error: 'Person not found' }, status: :not_found
+      render json: { error: 'Character not found' }, status: :not_found
     end
   end
 
   def create
-    person = Person.new(person_params)
-    if person.save
-      render json: person, status: :created
+    character = Character.new(character_params)
+    if character.save
+      render json: character, status: :created
     else
-      render json: { errors: person.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: character.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update
-    person = Person.find_by(id: params[:id])
-    if person
-      if person.update(person_params)
-        render json: person
+    character = Character.find_by(id: params[:id])
+    if character
+      if character.update(character_params)
+        render json: character
       else
-        render json: { errors: person.errors.full_messages }, status: :unprocessable_entity
+        render json: { errors: character.errors.full_messages }, status: :unprocessable_entity
       end
     else
-      render json: { error: 'Person not found' }, status: :not_found
+      render json: { error: 'Character not found' }, status: :not_found
     end
   end
 
   def destroy
-    person = Person.find_by(id: params[:id])
-    if person
-      person.destroy
+    character = Character.find_by(id: params[:id])
+    if character
+      character.destroy
       head :no_content
     else
-      render json: { error: 'Person not found' }, status: :not_found
+      render json: { error: 'Character not found' }, status: :not_found
     end
   end
 
   private
 
-  def person_params
-    params.require(:person).permit(
+  def character_params
+    params.require(:character).permit(
       :name,
       :birth_year,
       :eye_color,
