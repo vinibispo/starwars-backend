@@ -52,4 +52,40 @@ RSpec.describe 'Casts', type: :request do
       expect(response).to have_http_status(:bad_request)
     end
   end
+
+  describe 'DELETE destroy' do
+    it 'deletes a cast' do
+      film = FactoryBot.create(:film)
+      planet = FactoryBot.create(:planet)
+      person = FactoryBot.create(:person, homeworld: planet.id)
+      cast = FactoryBot.create(:cast, film:, person:)
+
+      expect do
+        delete cast_path(cast)
+      end.to change(Film::Person, :count).by(-1)
+    end
+
+    it 'returns http success' do
+      film = FactoryBot.create(:film)
+      planet = FactoryBot.create(:planet)
+      person = FactoryBot.create(:person, homeworld: planet.id)
+      cast = FactoryBot.create(:cast, film:, person:)
+
+      delete cast_path(cast)
+
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'returns http not found' do
+      delete cast_path(id: 0)
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it 'returns errors' do
+      delete cast_path(id: 0)
+
+      expect(response.body).to eq({ error: 'Cast not found' }.to_json)
+    end
+  end
 end

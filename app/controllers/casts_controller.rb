@@ -10,6 +10,16 @@ class CastsController < ApplicationController
     end
   end
 
+  def destroy
+    cast = Film::Person.find_by(id: params[:id])
+    if cast
+      cast.destroy
+      head :no_content
+    else
+      render json: { error: 'Cast not found' }, status: :not_found
+    end
+  end
+
   private
 
   def cast_params
