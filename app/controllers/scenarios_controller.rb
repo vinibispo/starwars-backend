@@ -8,6 +8,16 @@ class ScenariosController < ApplicationController
     end
   end
 
+  def destroy
+    scenario = Film::Planet.find_by(id: params[:id])
+    if scenario
+      scenario.destroy
+      head :no_content
+    else
+      render json: { error: 'Scenario not found' }, status: :not_found
+    end
+  end
+
   private
 
   def scenario_params
