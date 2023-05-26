@@ -16,6 +16,8 @@ gem 'puma', '~> 5.0'
 
 gem 'pagy', '~> 6.0'
 
+gem 'u-case'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
