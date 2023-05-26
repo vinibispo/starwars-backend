@@ -12,4 +12,11 @@ RSpec.describe Person, type: :model do
     it { should validate_presence_of(:skin_color) }
     it { should validate_presence_of(:homeworld) }
   end
+
+  context 'associations' do
+    it { should have_many(:cast) }
+    it { should have_many(:films).through(:cast) }
+
+    it { should belong_to(:planet) }
+  end
 end
