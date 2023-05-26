@@ -22,12 +22,10 @@ class PlanetsController < ApplicationController
   end
 
   def create
-    planet = Planet.new(planet_params)
-    if planet.save
-      render json: planet, status: :created
-    else
-      render json: { errors: planet.errors.full_messages }, status: :unprocessable_entity
-    end
+    Planet::Add
+      .call(input: planet_params)
+      .on_success { |result| render json: result[:planet], status: :created }
+      .on_failure(:invalid) { |result| render json: { errors: result[:error] }, status: :unprocessable_entity }
   end
 
   def update
