@@ -31,16 +31,11 @@ class PlanetsController < ApplicationController
   end
 
   def update
-    planet = Planet.find_by(id: params[:id])
-    if planet
-      if planet.update(planet_params)
-        render json: planet
-      else
-        render json: { errors: planet.errors.full_messages }, status: :unprocessable_entity
-      end
-    else
-      render json: { error: 'Planet not found' }, status: :not_found
-    end
+    Planet::Update
+      .call(id: params[:id], input: planet_params)
+      .on_success { |result| render json: result[:planet] }
+      .on_failure(:not_found) { render json: { error: 'Planet not found' }, status: :not_found }
+      .on_failure(:invalid) { |result| render json: { errors: result[:error] }, status: :unprocessable_entity }
   end
 
   def destroy
