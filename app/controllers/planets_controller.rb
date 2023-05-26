@@ -13,12 +13,10 @@ class PlanetsController < ApplicationController
   end
 
   def show
-    planet = Planet.find_by(id: params[:id])
-    if planet
-      render json: planet
-    else
-      render json: { error: 'Planet not found' }, status: :not_found
-    end
+    Planet::Find
+      .call(id: params[:id])
+      .on_success { |result| render json: result[:planet] }
+      .on_failure(:not_found) { render json: { error: 'Planet not found' }, status: :not_found }
   end
 
   def create
