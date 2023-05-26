@@ -4,7 +4,7 @@ class CastsController < ApplicationController
 
     cast = Film::Person.new(input)
     if cast.save
-      render json: cast
+      render json: cast, status: :created
     else
       render json: { errors: cast.errors.full_messages }, status: :unprocessable_entity
     end
