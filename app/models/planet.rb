@@ -10,6 +10,6 @@ class Planet < ApplicationRecord
   validates :surface_water, presence: true
 
   has_many :residents, class_name: 'Person', foreign_key: 'homeworld'
-  has_many :film_planets, class_name: 'Film::Planet'
-  has_many :films, through: :film_planets
+  has_many :scenarios, class_name: 'Film::Planet', foreign_key: 'planet_id'
+  has_many :films, through: :scenarios
 end
