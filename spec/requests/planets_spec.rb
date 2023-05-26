@@ -17,6 +17,7 @@ RSpec.describe 'Planets', type: :request do
     it 'returns the correct number of planets with a search term' do
       FactoryBot.create_list(:planet, 10)
       FactoryBot.create(:planet, name: 'Tatooine')
+
       get planets_path, params: { q: 'Tatooine' }
 
       expect(response.headers['Total-Count']).to eq('1')
@@ -79,7 +80,7 @@ RSpec.describe 'Planets', type: :request do
     it 'returns an error message if the planet is not valid' do
       post planets_path, params: { planet: FactoryBot.attributes_for(:planet, name: nil) }
 
-      expect(response.body).to eq({ errors: ["Name can't be blank"] }.to_json)
+      expect(response.body).to eq({ errors: ['Name can’t be blank'] }.to_json)
     end
   end
 
@@ -118,7 +119,7 @@ RSpec.describe 'Planets', type: :request do
       planet = FactoryBot.create(:planet)
       put planet_path(planet), params: { planet: FactoryBot.attributes_for(:planet, name: nil) }
 
-      expect(response.body).to eq({ errors: ["Name can't be blank"] }.to_json)
+      expect(response.body).to eq({ errors: ['Name can’t be blank'] }.to_json)
     end
 
     it 'returns a 404 if the planet is not found' do

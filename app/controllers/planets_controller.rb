@@ -44,13 +44,10 @@ class PlanetsController < ApplicationController
   end
 
   def destroy
-    planet = Planet.find_by(id: params[:id])
-    if planet
-      planet.destroy
-      head :no_content
-    else
-      render json: { error: 'Planet not found' }, status: :not_found
-    end
+    Planet::Remove
+      .call(id: params[:id])
+      .on_success { head :no_content }
+      .on_failure(:not_found) { render json: { error: 'Planet not found' }, status: :not_found }
   end
 
   private
