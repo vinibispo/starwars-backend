@@ -79,7 +79,7 @@ RSpec.describe 'Films', type: :request do
     it 'returns an error message when the film is invalid' do
       post films_path, params: { film: FactoryBot.attributes_for(:film, title: '') }
 
-      expect(response.body).to eq({ errors: ["Title can't be blank"] }.to_json)
+      expect(response.body).to eq({ errors: ['Title can’t be blank'] }.to_json)
     end
   end
 
@@ -115,7 +115,7 @@ RSpec.describe 'Films', type: :request do
       film = FactoryBot.create(:film)
       put film_path(film), params: { film: FactoryBot.attributes_for(:film, title: '') }
 
-      expect(response.body).to eq({ errors: ["Title can't be blank"] }.to_json)
+      expect(response.body).to eq({ errors: ['Title can’t be blank'] }.to_json)
     end
 
     it 'returns a 404 when the film is not found' do
