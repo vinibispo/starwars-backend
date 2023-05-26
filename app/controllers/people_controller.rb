@@ -32,26 +32,18 @@ class PeopleController < ApplicationController
   end
 
   def update
-    character = Character.find_by(id: params[:id])
-    if character
-      if character.update(character_params)
-        render json: character
-      else
-        render json: { errors: character.errors.full_messages }, status: :unprocessable_entity
-      end
-    else
-      render json: { error: 'Character not found' }, status: :not_found
-    end
+    Character::Update
+      .call(id: params[:id], input: character_params)
+      .on_success { |result| render json: result[:character] }
+      .on_failure(:not_found) { render json: { error: 'Character not found' }, status: :not_found }
+      .on_failure(:invalid) { |result| render json: { errors: result[:error] }, status: :unprocessable_entity }
   end
 
   def destroy
-    character = Character.find_by(id: params[:id])
-    if character
-      character.destroy
-      head :no_content
-    else
-      render json: { error: 'Character not found' }, status: :not_found
-    end
+    Character::Remove
+      .call(id: params[:id])
+      .on_success { head :no_content }
+      .on_failure(:not_found) { render json: { error: 'Character not found' }, status: :not_found }
   end
 
   private
