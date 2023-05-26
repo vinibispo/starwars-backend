@@ -1,4 +1,14 @@
 GIT
+  remote: https://github.com/nlsrchtr/ransack.git
+  revision: 38002a4369286b6a3e7990fbbe395a6547f45bdf
+  branch: fix-compatibility-with-rails-7-1-0-alpha-removed-table-name-alias
+  specs:
+    ransack (4.0.0)
+      activerecord (>= 6.1.5)
+      activesupport (>= 6.1.5)
+      i18n
+
+GIT
   remote: https://github.com/rails/rails.git
   revision: 3fff52254965ad817cfd650a4a959d533431d84e
   branch: main
@@ -166,10 +176,6 @@ GEM
     rails-html-sanitizer (1.5.0)
       loofah (~> 2.19, >= 2.19.1)
     rake (13.0.6)
-    ransack (4.0.0)
-      activerecord (>= 6.1.5)
-      activesupport (>= 6.1.5)
-      i18n
     reline (0.3.4)
       io-console (~> 0.5)
     rspec-core (3.12.2)
@@ -218,7 +224,7 @@ DEPENDENCIES
   pagy (~> 6.0)
   puma (~> 5.0)
   rails!
-  ransack
+  ransack!
   rspec-rails (~> 6.0.0)
   shoulda-matchers (~> 5.0)
   sqlite3 (~> 1.4)

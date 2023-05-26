@@ -6,7 +6,8 @@ ruby '3.2.0'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', github: 'rails/rails', branch: 'main'
 
-gem 'ransack'
+# We need to use this because the current version of Ransack is not compatible with Rails 7.1.0.alpha
+gem 'ransack', github: 'nlsrchtr/ransack', branch: 'fix-compatibility-with-rails-7-1-0-alpha-removed-table-name-alias'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
