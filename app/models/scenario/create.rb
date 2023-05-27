@@ -3,7 +3,7 @@ module Scenario
     attributes :film_id, :planet_id
 
     def call!
-      scenario = Record.new(film_id:, planet_id:)
+      scenario = Record.includes(:film, :planet).new(film_id:, planet_id:)
 
       return Success result: { scenario: } if scenario.save
 

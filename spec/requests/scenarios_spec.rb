@@ -24,7 +24,27 @@ RSpec.describe 'Scenarios', type: :request do
         film = FactoryBot.create(:film)
         planet = FactoryBot.create(:planet)
         post scenarios_path, params: { scenario: { film_id: film.id, planet_id: planet.id } }
-        expect(response.body).to eq(Scenario::Record.last.to_json)
+
+        expect(response.parsed_body['film_id']).to eq(film.id)
+        expect(response.parsed_body['planet_id']).to eq(planet.id)
+      end
+
+      it 'returns the created scenario with film' do
+        title = 'The Empire Strikes Back'
+        film = FactoryBot.create(:film, title:)
+        planet = FactoryBot.create(:planet)
+        post scenarios_path, params: { scenario: { film_id: film.id, planet_id: planet.id } }
+
+        expect(response.parsed_body['film']['title']).to eq(title)
+      end
+
+      it 'returns the created scenario with planet' do
+        name = 'Hoth'
+        film = FactoryBot.create(:film)
+        planet = FactoryBot.create(:planet, name:)
+        post scenarios_path, params: { scenario: { film_id: film.id, planet_id: planet.id } }
+
+        expect(response.parsed_body['planet']['name']).to eq(name)
       end
     end
 

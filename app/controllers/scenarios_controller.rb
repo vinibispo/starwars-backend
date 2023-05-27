@@ -2,7 +2,7 @@ class ScenariosController < ApplicationController
   def create
     Scenario::Create
       .call(film_id: scenario_params[:film_id], planet_id: scenario_params[:planet_id])
-      .on_success { |result| render json: result[:scenario], status: :created }
+      .on_success { |result| render json: Serialize.call(result[:scenario]), status: :created }
       .on_failure(:invalid) { |result| render json: { errors: result[:errors] }, status: :unprocessable_entity }
   end
 
@@ -18,4 +18,16 @@ class ScenariosController < ApplicationController
   def scenario_params
     params.require(:scenario).permit(:film_id, :planet_id)
   end
+
+  Serialize = lambda do |scenario|
+    Scenarios::Serializer.new(
+      id: scenario.id,
+      film_id: scenario.film_id,
+      planet_id: scenario.planet_id,
+      film: scenario.film,
+      planet: scenario.planet
+    )
+  end
+
+  private_constant :Serialize
 end
