@@ -32,7 +32,30 @@ RSpec.describe 'Casts', type: :request do
 
         post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
 
-        expect(response.body).to eq(Cast::Record.last.to_json)
+        expect(response.parsed_body['film_id']).to eq(film.id)
+        expect(response.parsed_body['character_id']).to eq(character.id)
+      end
+
+      it 'returns the created cast with the film' do
+        title = 'A New Hope'
+        film = FactoryBot.create(:film, title:)
+        planet = FactoryBot.create(:planet)
+        character = FactoryBot.create(:character, homeworld: planet.id)
+
+        post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
+
+        expect(response.parsed_body['film']['title']).to eq(title)
+      end
+
+      it 'returns the created cast with the character' do
+        name = 'Anakin Skywalker'
+        film = FactoryBot.create(:film)
+        planet = FactoryBot.create(:planet)
+        character = FactoryBot.create(:character, name:, homeworld: planet.id)
+
+        post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
+
+        expect(response.parsed_body['character']['name']).to eq(name)
       end
     end
 

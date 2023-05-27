@@ -1,9 +1,8 @@
 class CastsController < ApplicationController
   def create
-
     Cast::Add
       .call(film_id: cast_params[:film_id], character_id: cast_params[:character_id])
-      .on_success { |result| render json: result[:cast], status: :created }
+      .on_success { |result| render json: Serialize.call(result[:cast]), status: :created }
       .on_failure(:invalid) { |result| render json: { errors: result[:errors] }, status: :unprocessable_entity }
   end
 
@@ -19,4 +18,16 @@ class CastsController < ApplicationController
   def cast_params
     params.require(:cast).permit(:film_id, :character_id)
   end
+
+  Serialize = lambda do |cast|
+    Casts::Serializer.new(
+      id: cast.id,
+      film_id: cast.film_id,
+      character_id: cast.people_id,
+      character: cast.character,
+      film: cast.film
+    )
+  end
+
+  private_constant :Serialize
 end
