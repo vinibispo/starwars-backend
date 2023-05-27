@@ -11,13 +11,10 @@ class CastsController < ApplicationController
   end
 
   def destroy
-    cast = Cast.find_by(id: params[:id])
-    if cast
-      cast.destroy
-      head :no_content
-    else
-      render json: { error: 'Cast not found' }, status: :not_found
-    end
+    Cast::Remove
+      .call(id: params[:id])
+      .on_success { head :no_content }
+      .on_failure(:not_found) { render json: { error: 'Cast not found' }, status: :not_found }
   end
 
   private
