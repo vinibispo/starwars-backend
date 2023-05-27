@@ -11,10 +11,10 @@ RSpec.describe Film, type: :model do
   end
 
   context 'associations' do
-    it { should have_many(:characters).through(:cast) }
+    it { should have_many(:characters).through(:casts) }
     it { should have_many(:planets).through(:scenarios) }
 
-    it { should have_many(:cast) }
+    it { should have_many(:casts) }
     it { should have_many(:scenarios) }
   end
 end

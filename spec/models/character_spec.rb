@@ -14,8 +14,8 @@ RSpec.describe Character, type: :model do
   end
 
   context 'associations' do
-    it { should have_many(:cast) }
-    it { should have_many(:films).through(:cast) }
+    it { should have_many(:casts) }
+    it { should have_many(:films).through(:casts) }
 
     it { should belong_to(:planet) }
   end

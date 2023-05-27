@@ -1,4 +1,4 @@
-class Film::Character < ApplicationRecord
+class Cast < ApplicationRecord
   self.table_name = 'film_people'
 
   belongs_to :film

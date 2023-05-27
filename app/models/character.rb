@@ -11,8 +11,8 @@ class Character < ApplicationRecord
   validates :skin_color, presence: true
   validates :homeworld, presence: true
 
-  has_many :cast, class_name: 'Film::Character', foreign_key: 'people_id'
-  has_many :films, through: :cast
+  has_many :casts, class_name: 'Cast', foreign_key: 'people_id'
+  has_many :films, through: :casts
 
   belongs_to :planet, foreign_key: 'homeworld'
 end
