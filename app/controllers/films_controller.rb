@@ -21,12 +21,10 @@ class FilmsController < ApplicationController
   end
 
   def create
-    film = Film.new(film_params)
-    if film.save
-      render json: film, status: :created
-    else
-      render json: { errors: film.errors.full_messages }, status: :unprocessable_entity
-    end
+    Film::Create
+      .call(input: film_params)
+      .on_success { |result| render json: result[:film], status: :created }
+      .on_failure(:invalid) { |result| render json: { errors: result[:error] }, status: :unprocessable_entity }
   end
 
   def update
