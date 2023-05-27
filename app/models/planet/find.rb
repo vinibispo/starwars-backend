@@ -3,11 +3,28 @@ module Planet
     attributes :id
 
     def call!
-      planet = Record.find_by(id:)
+      record = Record.includes(:residents).find_by(id:)
 
-      return Success result: { planet: } if planet
+      return Failure(:not_found) if record.nil?
 
-      Failure :not_found
+      planet = Struct.new(
+        name: record.name,
+        rotation_period: record.rotation_period,
+        orbital_period: record.orbital_period,
+        diameter: record.diameter,
+        climate: record.climate,
+        gravity: record.gravity,
+        terrain: record.terrain,
+        surface_water: record.surface_water,
+        population: record.population,
+        residents: record.residents,
+        films: record.films,
+        created: record.created,
+        edited: record.edited,
+        id: record.id
+      )
+
+      Success result: { planet: }
     end
   end
 end

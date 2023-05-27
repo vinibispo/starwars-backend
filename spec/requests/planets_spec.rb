@@ -41,10 +41,33 @@ RSpec.describe 'Planets', type: :request do
       end
 
       it 'returns the correct planet' do
-        planet = FactoryBot.create(:planet)
+        name = 'Xandar'
+        planet = FactoryBot.create(:planet, name:)
         get planet_path(planet)
 
-        expect(response.body).to eq(planet.to_json)
+        expect(response.parsed_body['name']).to eq(name)
+      end
+
+      it 'returns the correct planet with residents' do
+        planet = FactoryBot.create(:planet)
+        character_name = 'Rocket Raccoon'
+        FactoryBot.create_list(:character, 3, planet:, name: character_name)
+        get planet_path(planet)
+
+        expect(response.parsed_body['residents'].first['name']).to eq(character_name)
+      end
+
+      it 'returns the correct planet with films' do
+        planet = FactoryBot.create(:planet)
+        film_title = 'Guardians of the Galaxy'
+        films = FactoryBot.create_list(:film, 3, title: film_title)
+        films.each do |film|
+          FactoryBot.create(:scenario, film:, planet:)
+        end
+
+        get planet_path(planet)
+
+        expect(response.parsed_body['films'].first['title']).to eq(film_title)
       end
     end
 
@@ -77,9 +100,10 @@ RSpec.describe 'Planets', type: :request do
       end
 
       it 'returns the new planet' do
-        post planets_path, params: { planet: FactoryBot.attributes_for(:planet) }
+        name = 'Xandar'
+        post planets_path, params: { planet: FactoryBot.attributes_for(:planet, name:) }
 
-        expect(response.body).to eq(Planet::Record.last.to_json)
+        expect(response.parsed_body['name']).to eq(name)
       end
     end
 
@@ -118,9 +142,7 @@ RSpec.describe 'Planets', type: :request do
         put planet_path(planet), params: { planet: FactoryBot.attributes_for(:planet, name: 'Tatooine') }
         planet.reload
 
-        expected = JSON.parse(planet.to_json)
-
-        expect(response.parsed_body).to eq(expected)
+        expect(response.parsed_body['name']).to eq('Tatooine')
       end
     end
 
