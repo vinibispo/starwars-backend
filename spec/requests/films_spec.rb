@@ -45,6 +45,29 @@ RSpec.describe 'Films', type: :request do
 
         expect(response.body).to include(film.title)
       end
+
+      it 'returns the correct characters' do
+        name = 'Boba Fett'
+        planet = FactoryBot.create(:planet)
+        character = FactoryBot.create(:character, name:, planet:)
+        film = FactoryBot.create(:film)
+        FactoryBot.create(:cast, film:, character:)
+
+        get film_path(film)
+
+        expect(response.parsed_body['characters'].first['name']).to eq(name)
+      end
+
+      it 'returns the correct planets' do
+        name = 'Zolan'
+        planet = FactoryBot.create(:planet, name:)
+        film = FactoryBot.create(:film)
+        FactoryBot.create(:scenario, film:, planet:)
+
+        get film_path(film)
+
+        expect(response.parsed_body['planets'].first['name']).to eq(name)
+      end
     end
 
     context 'when the film is not found' do
