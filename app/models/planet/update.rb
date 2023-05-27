@@ -4,7 +4,7 @@ module Planet
     attribute :input
 
     def call!
-      planet = Record.find_by(id:)
+      planet = Record.includes(:residents, :films).find_by(id:)
       return Failure(:not_found) unless planet
 
       planet.update(input)
