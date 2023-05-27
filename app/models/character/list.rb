@@ -8,7 +8,7 @@ module Character
                    else
                      Record.all
                    end
-      Success result: { characters: }
+      Success result: { characters: characters.includes(:planet, :films) }
     end
   end
 end

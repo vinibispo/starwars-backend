@@ -25,8 +25,8 @@ RSpec.describe 'People', type: :request do
       it 'returns the correct number of people with search' do
         planet = FactoryBot.create(:planet)
         FactoryBot.create_list(:character, 10, homeworld: planet.id)
-        FactoryBot.create(:character, name: 'Luke Skywalker II', homeworld: planet.id)
-        get people_path, params: { q: 'II' }
+        FactoryBot.create(:character, name: 'XXDXX', homeworld: planet.id)
+        get people_path, params: { q: 'XXD' }
 
         expect(response.headers['Total-Count']).to eq('1')
       end
@@ -46,11 +46,34 @@ RSpec.describe 'People', type: :request do
 
       it 'returns the correct character' do
         planet = FactoryBot.create(:planet)
+        name = 'R2-D2'
+        character = FactoryBot.create(:character, homeworld: planet.id, name:)
+
+        get person_path(character)
+
+        expect(response.parsed_body['name']).to eq(name)
+      end
+
+      it 'returns the correct planet' do
+        name = 'Bespin'
+        planet = FactoryBot.create(:planet, name:)
         character = FactoryBot.create(:character, homeworld: planet.id)
 
         get person_path(character)
 
-        expect(response.body).to eq(character.to_json)
+        expect(response.parsed_body['planet']['name']).to eq(name)
+      end
+
+      it 'returns the correct films' do
+        title = 'A New Hope'
+        film = FactoryBot.create(:film, title:)
+        planet = FactoryBot.create(:planet)
+        character = FactoryBot.create(:character, homeworld: planet.id)
+        FactoryBot.create(:cast, film:, character:)
+
+        get person_path(character)
+
+        expect(response.parsed_body['films'].first['title']).to eq(title)
       end
     end
 
@@ -89,11 +112,12 @@ RSpec.describe 'People', type: :request do
 
       it 'returns the correct character' do
         planet = FactoryBot.create(:planet)
-        params = { character: FactoryBot.attributes_for(:character, homeworld: planet.id) }
+        name = 'BB-8'
+        params = { character: FactoryBot.attributes_for(:character, homeworld: planet.id, name:) }
 
         post(people_path, params:)
 
-        expect(response.body).to eq(Character::Record.last.to_json)
+        expect(response.parsed_body['name']).to eq(name)
       end
     end
 

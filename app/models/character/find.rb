@@ -3,7 +3,7 @@ module Character
     attributes :id
 
     def call!
-      character = Record.find_by(id:)
+      character = Record.includes(:planet, :films).find_by(id:)
 
       return Failure(:not_found) unless character
 

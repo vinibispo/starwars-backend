@@ -3,7 +3,7 @@ module Character
     attributes :input
 
     def call!
-      character = Record.new(input)
+      character = Record.includes(:planet).new(input)
 
       if character.save
         Success result: { character: }
