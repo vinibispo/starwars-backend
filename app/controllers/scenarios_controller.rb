@@ -1,11 +1,9 @@
 class ScenariosController < ApplicationController
   def create
-    scenario = Scenario.new(scenario_params)
-    if scenario.save
-      render json: scenario, status: :created
-    else
-      render json: { errors: scenario.errors.full_messages }, status: :unprocessable_entity
-    end
+    Scenario::Create
+      .call(film_id: scenario_params[:film_id], planet_id: scenario_params[:planet_id])
+      .on_success { |result| render json: result[:scenario], status: :created }
+      .on_failure(:invalid) { |result| render json: { errors: result[:errors] }, status: :unprocessable_entity }
   end
 
   def destroy
