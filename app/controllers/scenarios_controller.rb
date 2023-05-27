@@ -1,6 +1,6 @@
 class ScenariosController < ApplicationController
   def create
-    scenario = Film::Planet.new(scenario_params)
+    scenario = Scenario.new(scenario_params)
     if scenario.save
       render json: scenario, status: :created
     else
@@ -9,7 +9,7 @@ class ScenariosController < ApplicationController
   end
 
   def destroy
-    scenario = Film::Planet.find_by(id: params[:id])
+    scenario = Scenario.find_by(id: params[:id])
     if scenario
       scenario.destroy
       head :no_content
