@@ -2,15 +2,15 @@
 
 class PeopleController < ApplicationController
   include Pagy::Backend
-  after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def index
-    if params[:q].present?
-      @pagy, people = pagy(Character.ransack(name_cont: params[:q]).result(distinct: true))
-    else
-      @pagy, people = pagy(Character.all)
-    end
-    render json: people
+    Character::List
+      .call(search: params[:q])
+      .on_success do |result|
+        pagy_object, characters = pagy(result[:characters])
+        pagy_headers_merge(pagy_object)
+        render json: characters
+      end
   end
 
   def show
