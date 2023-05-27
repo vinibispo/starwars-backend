@@ -30,16 +30,11 @@ class FilmsController < ApplicationController
   end
 
   def update
-    film = Film.find_by(id: params[:id])
-    if film.present?
-      if film.update(film_params)
-        render json: film
-      else
-        render json: { errors: film.errors.full_messages }, status: :unprocessable_entity
-      end
-    else
-      render json: { error: 'Film not found' }, status: :not_found
-    end
+    Film::Update
+      .call(id: params[:id], input: film_params)
+      .on_success { |result| render json: result[:film] }
+      .on_failure(:not_found) { render json: { error: 'Film not found' }, status: :not_found }
+      .on_failure(:invalid) { |result| render json: { errors: result[:error] }, status: :unprocessable_entity }
   end
 
   def destroy
