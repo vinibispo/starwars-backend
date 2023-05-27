@@ -14,12 +14,10 @@ class PeopleController < ApplicationController
   end
 
   def show
-    character = Character.find_by(id: params[:id])
-    if character
-      render json: character
-    else
-      render json: { error: 'Character not found' }, status: :not_found
-    end
+    Character::Find
+      .call(id: params[:id])
+      .on_success { |result| render json: result[:character] }
+      .on_failure(:not_found) { render json: { error: 'Character not found' }, status: :not_found }
   end
 
   def create
