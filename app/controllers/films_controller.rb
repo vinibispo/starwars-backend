@@ -12,12 +12,10 @@ class FilmsController < ApplicationController
   end
 
   def show
-    film = Film.find_by(id: params[:id])
-    if film
-      render json: film
-    else
-      render json: { error: 'Film not found' }, status: :not_found
-    end
+    Film::Find
+      .call(id: params[:id])
+      .on_success { |result| render json: result[:film] }
+      .on_failure(:not_found) { render json: { error: 'Film not found' }, status: :not_found }
   end
 
   def create
