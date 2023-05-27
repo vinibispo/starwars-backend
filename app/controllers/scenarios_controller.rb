@@ -9,13 +9,10 @@ class ScenariosController < ApplicationController
   end
 
   def destroy
-    scenario = Scenario.find_by(id: params[:id])
-    if scenario
-      scenario.destroy
-      head :no_content
-    else
-      render json: { error: 'Scenario not found' }, status: :not_found
-    end
+    Scenario::Remove
+      .call(id: params[:id])
+      .on_success { head :no_content }
+      .on_failure(:not_found) { render json: { error: 'Scenario not found' }, status: :not_found }
   end
 
   private
