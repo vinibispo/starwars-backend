@@ -23,12 +23,10 @@ class PeopleController < ApplicationController
   end
 
   def create
-    character = Character.new(character_params)
-    if character.save
-      render json: character, status: :created
-    else
-      render json: { errors: character.errors.full_messages }, status: :unprocessable_entity
-    end
+    Character::Create
+      .call(input: character_params)
+      .on_success { |result| render json: result[:character], status: :created }
+      .on_failure(:invalid) { |result| render json: { errors: result[:error] }, status: :unprocessable_entity }
   end
 
   def update
