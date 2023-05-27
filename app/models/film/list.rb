@@ -1,13 +1,15 @@
-class Film::List < Micro::Case
-  attributes :search
+module Film
+  class List < Micro::Case
+    attributes :search
 
-  def call!
-    films = if search.present?
-              Film.ransack(title_cont: search).result(distinct: true)
-            else
-              Film.all
-            end
+    def call!
+      films = if search.present?
+                Record.ransack(title_cont: search).result(distinct: true)
+              else
+                Record.all
+              end
 
-    Success result: { films: }
+      Success result: { films: }
+    end
   end
 end

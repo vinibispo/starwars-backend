@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :planet do
+  factory :planet, class: 'Planet::Record' do
     name { Faker::Space.planet }
     diameter { Faker::Space.distance_measurement }
     rotation_period { Faker::Space.distance_measurement }

@@ -22,7 +22,7 @@ RSpec.describe 'Casts', type: :request do
 
         expect do
           post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
-        end.to change(Cast, :count).by(1)
+        end.to change(Cast::Record, :count).by(1)
       end
 
       it 'returns the created cast' do
@@ -32,7 +32,7 @@ RSpec.describe 'Casts', type: :request do
 
         post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
 
-        expect(response.body).to eq(Cast.last.to_json)
+        expect(response.body).to eq(Cast::Record.last.to_json)
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe 'Casts', type: :request do
 
         expect do
           delete cast_path(cast)
-        end.to change(Cast, :count).by(-1)
+        end.to change(Cast::Record, :count).by(-1)
       end
     end
 

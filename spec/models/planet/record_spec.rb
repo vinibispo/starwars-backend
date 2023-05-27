@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Planet, type: :model do
+RSpec.describe Planet::Record, type: :model do
   context 'validations' do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:diameter) }
@@ -14,8 +14,8 @@ RSpec.describe Planet, type: :model do
   end
 
   context 'associations' do
-    it { should have_many(:residents).class_name('Character').with_foreign_key('homeworld') }
-    it { should have_many(:scenarios).class_name('Scenario') }
+    it { should have_many(:residents).class_name('Character::Record').with_foreign_key('homeworld') }
+    it { should have_many(:scenarios).class_name('Scenario::Record') }
     it { should have_many(:films).through(:scenarios) }
   end
 end

@@ -1,13 +1,15 @@
-class Cast::Add < Micro::Case
-  attributes :film_id, :character_id
+module Cast
+  class Add < Micro::Case
+    attributes :film_id, :character_id
 
-  def call!
-    cast = Cast.new(film_id:, people_id: character_id)
+    def call!
+      cast = Record.new(film_id:, people_id: character_id)
 
-    return Failure :invalid, result: { errors: cast.errors.full_messages } if cast.invalid?
+      return Failure :invalid, result: { errors: cast.errors.full_messages } if cast.invalid?
 
-    cast.save
+      cast.save
 
-    Success(result: { cast: })
+      Success(result: { cast: })
+    end
   end
 end

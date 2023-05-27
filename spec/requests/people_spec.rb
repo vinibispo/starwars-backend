@@ -25,8 +25,8 @@ RSpec.describe 'People', type: :request do
       it 'returns the correct number of people with search' do
         planet = FactoryBot.create(:planet)
         FactoryBot.create_list(:character, 10, homeworld: planet.id)
-        FactoryBot.create(:character, name: 'Luke Skywalker', homeworld: planet.id)
-        get people_path, params: { q: 'Luke' }
+        FactoryBot.create(:character, name: 'Luke Skywalker II', homeworld: planet.id)
+        get people_path, params: { q: 'II' }
 
         expect(response.headers['Total-Count']).to eq('1')
       end
@@ -84,7 +84,7 @@ RSpec.describe 'People', type: :request do
         planet = FactoryBot.create(:planet)
         params = { character: FactoryBot.attributes_for(:character, homeworld: planet.id) }
 
-        expect { post(people_path, params:) }.to change(Character, :count).by(1)
+        expect { post(people_path, params:) }.to change(Character::Record, :count).by(1)
       end
 
       it 'returns the correct character' do
@@ -93,7 +93,7 @@ RSpec.describe 'People', type: :request do
 
         post(people_path, params:)
 
-        expect(response.body).to eq(Character.last.to_json)
+        expect(response.body).to eq(Character::Record.last.to_json)
       end
     end
 
@@ -195,7 +195,7 @@ RSpec.describe 'People', type: :request do
 
         expect do
           delete person_path(character)
-        end.to change(Character, :count).by(-1)
+        end.to change(Character::Record, :count).by(-1)
       end
     end
 

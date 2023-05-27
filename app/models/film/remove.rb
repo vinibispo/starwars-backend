@@ -1,12 +1,14 @@
-class Film::Remove < Micro::Case
-  attributes :id
+module Film
+  class Remove < Micro::Case
+    attributes :id
 
-  def call!
-    film = Film.find_by(id:)
+    def call!
+      film = Record.find_by(id:)
 
-    return Failure(:not_found) unless film
+      return Failure(:not_found) unless film
 
-    film.destroy
-    Success(:ok)
+      film.destroy
+      Success(:ok)
+    end
   end
 end

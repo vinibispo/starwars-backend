@@ -1,13 +1,15 @@
-class Cast::Remove < Micro::Case
-  attributes :id
+module Cast
+  class Remove < Micro::Case
+    attributes :id
 
-  def call!
-    cast = Cast.find_by(id:)
+    def call!
+      cast = Record.find_by(id:)
 
-    return Failure(:not_found) if cast.nil?
+      return Failure(:not_found) if cast.nil?
 
-    cast.destroy
+      cast.destroy
 
-    Success(:ok)
+      Success(:ok)
+    end
   end
 end

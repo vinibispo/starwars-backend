@@ -1,12 +1,14 @@
-class Character::Remove < Micro::Case
-  attributes :id
+module Character
+  class Remove < Micro::Case
+    attributes :id
 
-  def call!
-    character = Character.find_by(id:)
+    def call!
+      character = Record.find_by(id:)
 
-    return Failure(:not_found) unless character
+      return Failure(:not_found) unless character
 
-    character.destroy
-    Success(:removed)
+      character.destroy
+      Success(:removed)
+    end
   end
 end

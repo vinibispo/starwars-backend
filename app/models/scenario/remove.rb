@@ -1,13 +1,15 @@
-class Scenario::Remove < Micro::Case
-  attributes :id
+module Scenario
+  class Remove < Micro::Case
+    attributes :id
 
-  def call!
-    scenario = Scenario.find_by(id:)
+    def call!
+      scenario = Record.find_by(id:)
 
-    return Failure(:not_found) if scenario.nil?
+      return Failure(:not_found) if scenario.nil?
 
-    scenario.destroy
+      scenario.destroy
 
-    Success(:removed)
+      Success(:removed)
+    end
   end
 end

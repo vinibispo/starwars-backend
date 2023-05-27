@@ -1,12 +1,14 @@
-class Planet::Remove < Micro::Case
-  attribute :id
+module Planet
+  class Remove < Micro::Case
+    attribute :id
 
-  def call!
-    planet = Planet.find_by(id:)
+    def call!
+      planet = Record.find_by(id:)
 
-    return Failure(:not_found) unless planet
+      return Failure(:not_found) unless planet
 
-    planet.destroy
-    Success()
+      planet.destroy
+      Success()
+    end
   end
 end

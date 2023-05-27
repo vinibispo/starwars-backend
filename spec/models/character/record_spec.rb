@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Character, type: :model do
+RSpec.describe Character::Record, type: :model do
   context 'validations' do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:birth_year) }

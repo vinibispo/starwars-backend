@@ -47,7 +47,6 @@ RSpec.describe 'Films', type: :request do
       end
     end
 
-
     context 'when the film is not found' do
       it 'returns a 404' do
         get film_path(1)
@@ -73,18 +72,17 @@ RSpec.describe 'Films', type: :request do
       it 'creates a new film' do
         expect do
           post films_path, params: { film: FactoryBot.attributes_for(:film) }
-        end.to change(Film, :count).by(1)
+        end.to change(Film::Record, :count).by(1)
       end
 
       it 'returns the created film' do
         post films_path, params: { film: FactoryBot.attributes_for(:film) }
 
-        expect(response.body).to include(Film.last.title)
+        expect(response.body).to include(Film::Record.last.title)
       end
     end
 
     context 'when the film is invalid' do
-
       it 'returns a 422' do
         post films_path, params: { film: { title: '' } }
 
@@ -165,7 +163,7 @@ RSpec.describe 'Films', type: :request do
         film = FactoryBot.create(:film)
         expect do
           delete film_path(film)
-        end.to change(Film, :count).by(-1)
+        end.to change(Film::Record, :count).by(-1)
       end
     end
 

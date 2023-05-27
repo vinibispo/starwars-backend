@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :scenario, class: 'Scenario' do
+  factory :scenario, class: 'Scenario::Record' do
     association :film
     association :planet
   end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :character do
+  factory :character, class: 'Character::Record' do
     name { Faker::Name.name }
     birth_year { Faker::Number.between(from: 1900, to: 2020) }
     eye_color { Faker::Color.color_name }

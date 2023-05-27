@@ -1,4 +1,4 @@
-class Character < ApplicationRecord
+class Character::Record < ApplicationRecord
   self.table_name = 'people'
 
   validates :name, presence: true
@@ -11,8 +11,8 @@ class Character < ApplicationRecord
   validates :skin_color, presence: true
   validates :homeworld, presence: true
 
-  has_many :casts, class_name: 'Cast', foreign_key: 'people_id'
-  has_many :films, through: :casts
+  has_many :casts, class_name: 'Cast::Record', foreign_key: 'people_id'
+  has_many :films, class_name: 'Film::Record', through: :casts
 
-  belongs_to :planet, foreign_key: 'homeworld'
+  belongs_to :planet, class_name: 'Planet::Record', foreign_key: 'homeworld'
 end
