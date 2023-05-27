@@ -3,11 +3,12 @@ module Planet
     attributes :search
 
     def call!
-      planets = if search.present?
+      records = if search.present?
                   Record.ransack(name_cont: search).result(distinct: true)
                 else
                   Record.all
                 end
+      planets = records.includes(:residents, :films)
 
       Success result: { planets: }
     end

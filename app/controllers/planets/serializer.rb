@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Planet
-  Struct = Micro::Struct[:readonly].new(
+module Planets
+  Serializer = Micro::Struct[:readonly].new(
     required: %i[name rotation_period orbital_period diameter climate gravity terrain surface_water
                  population id],
     optional: %i[residents films created edited]
