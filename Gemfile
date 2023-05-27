@@ -19,6 +19,8 @@ gem 'pagy', '~> 6.0'
 
 gem 'u-case'
 
+gem 'u-struct'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
