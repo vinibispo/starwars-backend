@@ -1,13 +1,10 @@
 class CastsController < ApplicationController
   def create
-    input = { film_id: cast_params[:film_id], people_id: cast_params[:character_id] }
 
-    cast = Cast.new(input)
-    if cast.save
-      render json: cast, status: :created
-    else
-      render json: { errors: cast.errors.full_messages }, status: :unprocessable_entity
-    end
+    Cast::Add
+      .call(film_id: cast_params[:film_id], character_id: cast_params[:character_id])
+      .on_success { |result| render json: result[:cast], status: :created }
+      .on_failure(:invalid) { |result| render json: { errors: result[:errors] }, status: :unprocessable_entity }
   end
 
   def destroy
