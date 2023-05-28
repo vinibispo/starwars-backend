@@ -95,13 +95,13 @@ RSpec.describe 'Films', type: :request do
       it 'creates a new film' do
         expect do
           post films_path, params: { film: FactoryBot.attributes_for(:film) }
-        end.to change(Film::Record, :count).by(1)
+        end.to change(Film, :count).by(1)
       end
 
       it 'returns the created film' do
         post films_path, params: { film: FactoryBot.attributes_for(:film) }
 
-        expect(response.body).to include(Film::Record.last.title)
+        expect(response.body).to include(Film.last.title)
       end
     end
 
@@ -186,7 +186,7 @@ RSpec.describe 'Films', type: :request do
         film = FactoryBot.create(:film)
         expect do
           delete film_path(film)
-        end.to change(Film::Record, :count).by(-1)
+        end.to change(Film, :count).by(-1)
       end
     end
 

@@ -2,7 +2,7 @@ class FilmsController < ApplicationController
   include Pagy::Backend
 
   def index
-    Film::List
+    Films::Repo::List
       .call(search: params[:q])
       .on_success do |result|
         pagy_object, films = pagy(result[:films])
@@ -12,21 +12,21 @@ class FilmsController < ApplicationController
   end
 
   def show
-    Film::Find
+    Films::Repo::Find
       .call(id: params[:id])
       .on_success { |result| render json: Serialize.call(result[:film]) }
       .on_failure(:not_found) { render json: { error: 'Film not found' }, status: :not_found }
   end
 
   def create
-    Film::Create
+    Films::Repo::Create
       .call(input: film_params)
       .on_success { |result| render json: result[:film], status: :created }
       .on_failure(:invalid) { |result| render json: { errors: result[:error] }, status: :unprocessable_entity }
   end
 
   def update
-    Film::Update
+    Films::Repo::Update
       .call(id: params[:id], input: film_params)
       .on_success { |result| render json: Serialize.call(result[:film]) }
       .on_failure(:not_found) { render json: { error: 'Film not found' }, status: :not_found }
@@ -34,7 +34,7 @@ class FilmsController < ApplicationController
   end
 
   def destroy
-    Film::Remove
+    Films::Repo::Remove
       .call(id: params[:id])
       .on_success { head :no_content }
       .on_failure(:not_found) { render json: { error: 'Film not found' }, status: :not_found }

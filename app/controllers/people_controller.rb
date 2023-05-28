@@ -4,7 +4,7 @@ class PeopleController < ApplicationController
   include Pagy::Backend
 
   def index
-    Character::List
+    Characters::Repo::List
       .call(search: params[:q])
       .on_success do |result|
         pagy_object, characters = pagy(result[:characters])
@@ -14,21 +14,21 @@ class PeopleController < ApplicationController
   end
 
   def show
-    Character::Find
+    Characters::Repo::Find
       .call(id: params[:id])
       .on_success { |result| render json: Serialize.call(result[:character]) }
       .on_failure(:not_found) { render json: { error: 'Character not found' }, status: :not_found }
   end
 
   def create
-    Character::Create
+    Characters::Repo::Create
       .call(input: character_params)
       .on_success { |result| render json: Serialize.call(result[:character]), status: :created }
       .on_failure(:invalid) { |result| render json: { errors: result[:error] }, status: :unprocessable_entity }
   end
 
   def update
-    Character::Update
+    Characters::Repo::Update
       .call(id: params[:id], input: character_params)
       .on_success { |result| render json: Serialize.call(result[:character]) }
       .on_failure(:not_found) { render json: { error: 'Character not found' }, status: :not_found }
@@ -36,7 +36,7 @@ class PeopleController < ApplicationController
   end
 
   def destroy
-    Character::Remove
+    Characters::Repo::Remove
       .call(id: params[:id])
       .on_success { head :no_content }
       .on_failure(:not_found) { render json: { error: 'Character not found' }, status: :not_found }
@@ -58,7 +58,6 @@ class PeopleController < ApplicationController
     )
   end
 
-
   Serialize = lambda do |character|
     People::Serializer.new(
       id: character.id,
@@ -75,7 +74,6 @@ class PeopleController < ApplicationController
       planet: character.planet
     )
   end
-
 
   private_constant :Serialize
 end

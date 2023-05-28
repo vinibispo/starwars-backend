@@ -107,7 +107,7 @@ RSpec.describe 'People', type: :request do
         planet = FactoryBot.create(:planet)
         params = { character: FactoryBot.attributes_for(:character, homeworld: planet.id) }
 
-        expect { post(people_path, params:) }.to change(Character::Record, :count).by(1)
+        expect { post(people_path, params:) }.to change(Character, :count).by(1)
       end
 
       it 'returns the correct character' do
@@ -219,7 +219,7 @@ RSpec.describe 'People', type: :request do
 
         expect do
           delete person_path(character)
-        end.to change(Character::Record, :count).by(-1)
+        end.to change(Character, :count).by(-1)
       end
     end
 

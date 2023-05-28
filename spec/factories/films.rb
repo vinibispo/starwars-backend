@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :film, class: 'Film::Record' do
+  factory :film, class: 'Film' do
     title { Faker::Movie.title }
     episode_id { Faker::Number.between(from: 1, to: 10) }
     opening_crawl { Faker::Lorem.paragraph }

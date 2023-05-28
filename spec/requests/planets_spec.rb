@@ -96,7 +96,7 @@ RSpec.describe 'Planets', type: :request do
       it 'creates a new planet' do
         expect do
           post planets_path, params: { planet: FactoryBot.attributes_for(:planet) }
-        end.to change(Planet::Record, :count).by(1)
+        end.to change(Planet, :count).by(1)
       end
 
       it 'returns the new planet' do
@@ -189,7 +189,7 @@ RSpec.describe 'Planets', type: :request do
         planet = FactoryBot.create(:planet)
         expect do
           delete planet_path(planet)
-        end.to change(Planet::Record, :count).by(-1)
+        end.to change(Planet, :count).by(-1)
       end
     end
 

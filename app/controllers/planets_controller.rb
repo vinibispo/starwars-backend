@@ -4,7 +4,7 @@ class PlanetsController < ApplicationController
   include Pagy::Backend
 
   def index
-    Planet::List
+    Planets::Repo::List
       .call(search: params[:q])
       .on_failure(:not_found) { render json: { error: 'Planet not found' }, status: :not_found }
       .on_failure(:invalid) { |result| render json: { errors: result[:error] }, status: :unprocessable_entity }
@@ -16,21 +16,21 @@ class PlanetsController < ApplicationController
   end
 
   def show
-    Planet::Find
+    Planets::Repo::Find
       .call(id: params[:id])
       .on_success { |result| render json: Serialize.call(result[:planet]) }
       .on_failure(:not_found) { render json: { error: 'Planet not found' }, status: :not_found }
   end
 
   def create
-    Planet::Add
+    Planets::Repo::Add
       .call(input: planet_params)
       .on_success { |result| render json: Serialize.call(result[:planet]), status: :created }
       .on_failure(:invalid) { |result| render json: { errors: result[:error] }, status: :unprocessable_entity }
   end
 
   def update
-    Planet::Update
+    Planets::Repo::Update
       .call(id: params[:id], input: planet_params)
       .on_success { |result| render json: Serialize.call(result[:planet]) }
       .on_failure(:not_found) { render json: { error: 'Planet not found' }, status: :not_found }
@@ -38,7 +38,7 @@ class PlanetsController < ApplicationController
   end
 
   def destroy
-    Planet::Remove
+    Planets::Repo::Remove
       .call(id: params[:id])
       .on_success { head :no_content }
       .on_failure(:not_found) { render json: { error: 'Planet not found' }, status: :not_found }

@@ -1,13 +1,13 @@
 class CastsController < ApplicationController
   def create
-    Cast::Add
+    Casts::Repo::Add
       .call(film_id: cast_params[:film_id], character_id: cast_params[:character_id])
       .on_success { |result| render json: Serialize.call(result[:cast]), status: :created }
       .on_failure(:invalid) { |result| render json: { errors: result[:errors] }, status: :unprocessable_entity }
   end
 
   def destroy
-    Cast::Remove
+    Casts::Repo::Remove
       .call(id: params[:id])
       .on_success { head :no_content }
       .on_failure(:not_found) { render json: { error: 'Cast not found' }, status: :not_found }

@@ -17,7 +17,7 @@ RSpec.describe 'Scenarios', type: :request do
         planet = FactoryBot.create(:planet)
         expect do
           post scenarios_path, params: { scenario: { film_id: film.id, planet_id: planet.id } }
-        end.to change(Scenario::Record, :count).by(1)
+        end.to change(Scenario, :count).by(1)
       end
 
       it 'returns the created scenario' do
@@ -77,7 +77,7 @@ RSpec.describe 'Scenarios', type: :request do
         scenario = FactoryBot.create(:scenario, film:, planet:)
         expect do
           delete scenario_path(scenario)
-        end.to change(Scenario::Record, :count).by(-1)
+        end.to change(Scenario, :count).by(-1)
       end
 
       it 'returns an empty response body' do
