@@ -1,12 +1,7 @@
 class Film::Record < ApplicationRecord
   self.table_name = 'films'
 
-  validates :title, presence: true
-  validates :episode_id, presence: true
-  validates :opening_crawl, presence: true
-  validates :director, presence: true
-  validates :producer, presence: true
-  validates :release_date, presence: true
+  required :title, :episode_id, :opening_crawl, :director, :producer, :release_date
 
   has_many :scenarios, class_name: 'Scenario::Record', foreign_key: 'film_id'
   has_many :planets, through: :scenarios
