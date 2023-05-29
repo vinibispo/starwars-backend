@@ -1,30 +1,36 @@
 # frozen_string_literal: true
 
 module Planets
-  Serializer = Micro::Struct[:readonly].new(
-    required: %i[name rotation_period orbital_period diameter climate gravity terrain surface_water
-                 population id],
-    optional: %i[residents films created edited]
+  Serializer = Data.define(
+    :name,
+    :rotation_period,
+    :orbital_period,
+    :diameter,
+    :climate,
+    :gravity,
+    :terrain,
+    :surface_water,
+    :population,
+    :id,
+    :residents,
+    :films
   ) do
-    def residents
-      @residents ||= []
-      @residents.map { |resident| Resident.new(name: resident.name, id: resident.id) }
+    def parsed_films
+      films.map { |film| Film.new(title: film.title, id: film.id) }
     end
 
-    def films
-      @films ||= []
-      @films.map { |film| Film.new(title: film.title, id: film.id) }
+    def parsed_residents
+      residents.map { |resident| Resident.new(name: resident.name, id: resident.id) }
+    end
+
+    def to_h
+      super.merge(films: parsed_films, residents: parsed_residents)
     end
   end
-  Resident = Micro::Struct[:readonly].new(
-    :name,
-    :id
-  )
 
-  Film = Micro::Struct[:readonly].new(
-    :title,
-    :id
-  )
+  Resident = Data.define(:name, :id)
+
+  Film = Data.define(:title, :id)
 
   private_constant :Resident, :Film
 end

@@ -1,33 +1,37 @@
 # frozen_string_literal: true
 
 module People
-  Serializer = Micro::Struct[:readonly].new(
-    required: %i[id name birth_year eye_color gender hair_color height mass skin_color homeworld],
-    optional: %i[films created edited planet]
+  Serializer = Data.define(
+    :id,
+    :name,
+    :birth_year,
+    :eye_color,
+    :homeworld,
+    :gender,
+    :hair_color,
+    :height,
+    :mass,
+    :skin_color, :films, :planet
   ) do
-    def films
-      @films.map { |film| Film.new(id: film.id, title: film.title) }
+    def parsed_films
+      films.map { |film| Film.new(id: film.id, title: film.title) }
     end
 
-    def planet
-      return nil if @planet.nil?
-
+    def parsed_planet
       Planet.new(
-        id: @planet.id,
-        name: @planet.name
+        id: planet.id,
+        name: planet.name
       )
+    end
+
+    def to_h
+      super.merge(planet: parsed_planet, films: parsed_films)
     end
   end
 
-  Film = Micro::Struct[:readonly].new(
-    :id,
-    :title
-  )
+  Film = Data.define(:id, :title)
 
-  Planet = Micro::Struct[:readonly].new(
-    :id,
-    :name
-  )
+  Planet = Data.define(:id, :name)
 
   private_constant :Film, :Planet
 end

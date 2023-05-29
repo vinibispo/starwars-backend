@@ -1,28 +1,23 @@
 module Films
-  Serializer = Micro::Struct[:readonly].new(
-    required: %i[id title episode_id opening_crawl director producer release_date],
-    optional: %i[characters planets]
+  Serializer = Data.define(
+    :id, :title, :episode_id, :opening_crawl, :director, :producer, :release_date, :characters, :planets
   ) do
-    def characters
-      @characters ||= []
-      @characters.map { |character| Character.new(id: character.id, name: character.name) }
+    def parsed_characters
+      characters.map { |character| Character.new(id: character.id, name: character.name) }
     end
 
-    def planets
-      @planets ||= []
-      @planets.map { |planet| Planet.new(id: planet.id, name: planet.name) }
+    def parsed_planets
+      planets.map { |planet| Planet.new(id: planet.id, name: planet.name) }
+    end
+
+    def to_h
+      super.merge(planets: parsed_planets, characters: parsed_characters)
     end
   end
 
-  Character = Micro::Struct[:readonly].new(
-    :id,
-    :name
-  )
+  Character = Data.define(:id, :name)
 
-  Planet = Micro::Struct[:readonly].new(
-    :id,
-    :name
-  )
+  Planet = Data.define(:id, :name)
 
   private_constant :Character, :Planet
 end

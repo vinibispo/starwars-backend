@@ -72,8 +72,6 @@ class PlanetsController < ApplicationController
       climate: planet.climate,
       terrain: planet.terrain,
       surface_water: planet.surface_water,
-      created: planet.created,
-      edited: planet.edited,
       residents: planet.residents,
       films: planet.films
     )
