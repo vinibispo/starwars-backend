@@ -121,6 +121,8 @@ GEM
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     diff-lcs (1.5.0)
+    dockerfile-rails (1.4.1)
+      rails
     erubi (1.12.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -187,6 +189,10 @@ GEM
     rails-html-sanitizer (1.5.0)
       loofah (~> 2.19, >= 2.19.1)
     rake (13.0.6)
+    redis (5.0.6)
+      redis-client (>= 0.9.0)
+    redis-client (0.14.1)
+      connection_pool
     reline (0.3.4)
       io-console (~> 0.5)
     rspec-core (3.12.2)
@@ -231,6 +237,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
   debug
+  dockerfile-rails (>= 1.4)
   factory_bot_rails
   faker
   jwt
@@ -240,6 +247,7 @@ DEPENDENCIES
   rack-cors
   rails!
   ransack!
+  redis (~> 5.0)
   rspec-rails (~> 6.0.0)
   shoulda-matchers (~> 5.0)
   sqlite3 (~> 1.4)

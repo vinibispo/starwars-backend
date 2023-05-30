@@ -62,3 +62,7 @@ end
 group :test do
   gem 'shoulda-matchers', '~> 5.0'
 end
+
+gem "dockerfile-rails", ">= 1.4", :group => :development
+
+gem "redis", "~> 5.0"
