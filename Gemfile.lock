@@ -209,7 +209,6 @@ GEM
     u-case (4.5.2)
       kind (>= 5.6, < 6.0)
       u-attributes (>= 2.7, < 3.0)
-    u-struct (1.1.0)
     webrick (1.8.1)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -234,7 +233,6 @@ DEPENDENCIES
   sqlite3 (~> 1.4)
   tzinfo-data
   u-case
-  u-struct
 
 RUBY VERSION
    ruby 3.2.0p0
