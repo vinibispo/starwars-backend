@@ -1,5 +1,5 @@
-if Rails.env.development?
+if Rails.env.development? || Rails.env.production?
   Rails.application.configure do
-    config.action_mailer.asset_host = Rails.application.credentials.app_url
+    config.action_mailer.asset_host = APP_URL
   end
 end
