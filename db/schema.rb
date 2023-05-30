@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_05_30_000733) do
+ActiveRecord::Schema[7.1].define(version: 2023_05_30_011437) do
   create_table "film_people", force: :cascade do |t|
     t.integer "film_id", null: false
     t.integer "people_id"
@@ -69,6 +69,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_05_30_000733) do
     t.string "password_digest"
     t.datetime "created", default: -> { "datetime('now')" }
     t.datetime "edited", default: -> { "datetime('now')" }
+    t.string "password_reset_token"
+    t.datetime "password_reset_sent_at"
   end
 
   add_foreign_key "film_people", "films"

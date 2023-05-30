@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true
 
-  required :email, :name, :password
+  required :email, :name
 
-  validates :password, length: { minimum: 6 }
+  validates :password, presence: true, length: { minimum: 6 }, if: ->(record) { record.new_record? }
 end
