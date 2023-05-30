@@ -107,6 +107,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    bcrypt (3.1.18)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -133,6 +134,7 @@ GEM
     io-console (0.6.0)
     irb (1.6.4)
       reline (>= 0.3.0)
+    jwt (2.7.0)
     kind (5.10.0)
     loofah (2.21.3)
       crass (~> 1.0.2)
@@ -219,10 +221,12 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bcrypt (~> 3.1.7)
   bootsnap
   debug
   factory_bot_rails
   faker
+  jwt
   pagy (~> 6.0)
   puma (~> 5.0)
   rack-cors
