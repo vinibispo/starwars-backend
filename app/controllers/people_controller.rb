@@ -3,6 +3,8 @@
 class PeopleController < ApplicationController
   include Pagy::Backend
 
+  before_action :authenticate_user
+
   def index
     Characters::Repo::List
       .call(search: params[:q])

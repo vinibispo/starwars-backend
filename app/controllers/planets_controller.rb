@@ -2,6 +2,7 @@
 
 class PlanetsController < ApplicationController
   include Pagy::Backend
+  before_action :authenticate_user
 
   def index
     Planets::Repo::List

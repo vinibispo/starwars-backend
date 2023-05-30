@@ -1,4 +1,6 @@
 class CastsController < ApplicationController
+  before_action :authenticate_user
+
   def create
     Casts::Repo::Add
       .call(film_id: cast_params[:film_id], character_id: cast_params[:character_id])

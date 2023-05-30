@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Casts', type: :request do
+  let(:user) { FactoryBot.create(:user) }
+  let(:token) { Token[user] }
+  let(:headers) { { 'Authorization' => "Bearer #{token}" } }
+
   describe 'POST create' do
     context 'when the cast is valid' do
       it 'returns http success' do
@@ -10,7 +14,7 @@ RSpec.describe 'Casts', type: :request do
         planet = FactoryBot.create(:planet)
         character = FactoryBot.create(:character, homeworld: planet.id)
 
-        post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
+        post(casts_path, params: { cast: { film_id: film.id, character_id: character.id } }, headers:)
 
         expect(response).to have_http_status(:success)
       end
@@ -21,7 +25,7 @@ RSpec.describe 'Casts', type: :request do
         character = FactoryBot.create(:character, homeworld: planet.id)
 
         expect do
-          post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
+          post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }, headers:
         end.to change(Cast, :count).by(1)
       end
 
@@ -30,7 +34,7 @@ RSpec.describe 'Casts', type: :request do
         planet = FactoryBot.create(:planet)
         character = FactoryBot.create(:character, homeworld: planet.id)
 
-        post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
+        post(casts_path, params: { cast: { film_id: film.id, character_id: character.id } }, headers:)
 
         expect(response.parsed_body['film_id']).to eq(film.id)
         expect(response.parsed_body['character_id']).to eq(character.id)
@@ -42,7 +46,7 @@ RSpec.describe 'Casts', type: :request do
         planet = FactoryBot.create(:planet)
         character = FactoryBot.create(:character, homeworld: planet.id)
 
-        post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
+        post(casts_path, params: { cast: { film_id: film.id, character_id: character.id } }, headers:)
 
         expect(response.parsed_body['film']['title']).to eq(title)
       end
@@ -53,7 +57,7 @@ RSpec.describe 'Casts', type: :request do
         planet = FactoryBot.create(:planet)
         character = FactoryBot.create(:character, name:, homeworld: planet.id)
 
-        post casts_path, params: { cast: { film_id: film.id, character_id: character.id } }
+        post(casts_path, params: { cast: { film_id: film.id, character_id: character.id } }, headers:)
 
         expect(response.parsed_body['character']['name']).to eq(name)
       end
@@ -61,13 +65,13 @@ RSpec.describe 'Casts', type: :request do
 
     context 'when the cast is invalid' do
       it 'returns http unprocessable entity' do
-        post casts_path, params: { cast: { film_id: nil, character_id: nil } }
+        post(casts_path, params: { cast: { film_id: nil, character_id: nil } }, headers:)
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'returns the errors' do
-        post casts_path, params: { cast: { film_id: nil, character_id: nil } }
+        post(casts_path, params: { cast: { film_id: nil, character_id: nil } }, headers:)
 
         expect(response.body).to eq({ errors: ['Film must exist', 'Character must exist'] }.to_json)
       end
@@ -75,7 +79,7 @@ RSpec.describe 'Casts', type: :request do
 
     context 'when cast is empty' do
       it 'returns bad request' do
-        post casts_path, params: { cast: {} }
+        post(casts_path, params: { cast: {} }, headers:)
 
         expect(response).to have_http_status(:bad_request)
       end
@@ -90,7 +94,7 @@ RSpec.describe 'Casts', type: :request do
         character = FactoryBot.create(:character, homeworld: planet.id)
         cast = FactoryBot.create(:cast, film:, character:)
 
-        delete cast_path(cast)
+        delete(cast_path(cast), headers:)
 
         expect(response).to have_http_status(:success)
       end
@@ -102,20 +106,20 @@ RSpec.describe 'Casts', type: :request do
         cast = FactoryBot.create(:cast, film:, character:)
 
         expect do
-          delete cast_path(cast)
+          delete cast_path(cast), headers:
         end.to change(Cast, :count).by(-1)
       end
     end
 
     context 'when the cast does not exist' do
       it 'returns http not found' do
-        delete cast_path(id: 0)
+        delete(cast_path(id: 0), headers:)
 
         expect(response).to have_http_status(:not_found)
       end
 
       it 'returns errors' do
-        delete cast_path(id: 0)
+        delete(cast_path(id: 0), headers:)
 
         expect(response.body).to eq({ error: 'Cast not found' }.to_json)
       end

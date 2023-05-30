@@ -3,10 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'People', type: :request do
+  let(:user) { FactoryBot.create(:user) }
+  let(:token) { Token[user] }
+  let(:headers) { { 'Authorization' => "Bearer #{token}" } }
   describe 'GET index' do
     context 'when there are no people' do
       it 'returns http success' do
-        get people_path
+        get(people_path, headers:)
         expect(response).to have_http_status(:success)
       end
     end
@@ -15,7 +18,7 @@ RSpec.describe 'People', type: :request do
       it 'returns the correct number of people' do
         planet = FactoryBot.create(:planet)
         FactoryBot.create_list(:character, 10, homeworld: planet.id)
-        get people_path
+        get(people_path, headers:)
 
         expect(response.headers['Total-Count']).to eq('10')
       end
@@ -26,7 +29,7 @@ RSpec.describe 'People', type: :request do
         planet = FactoryBot.create(:planet)
         FactoryBot.create_list(:character, 10, homeworld: planet.id)
         FactoryBot.create(:character, name: 'XXDXX', homeworld: planet.id)
-        get people_path, params: { q: 'XXD' }
+        get(people_path, params: { q: 'XXD' }, headers:)
 
         expect(response.headers['Total-Count']).to eq('1')
       end
@@ -39,7 +42,7 @@ RSpec.describe 'People', type: :request do
         planet = FactoryBot.create(:planet)
         character = FactoryBot.create(:character, homeworld: planet.id)
 
-        get person_path(character)
+        get(person_path(character), headers:)
 
         expect(response).to have_http_status(:success)
       end
@@ -49,7 +52,7 @@ RSpec.describe 'People', type: :request do
         name = 'R2-D2'
         character = FactoryBot.create(:character, homeworld: planet.id, name:)
 
-        get person_path(character)
+        get(person_path(character), headers:)
 
         expect(response.parsed_body['name']).to eq(name)
       end
@@ -59,7 +62,7 @@ RSpec.describe 'People', type: :request do
         planet = FactoryBot.create(:planet, name:)
         character = FactoryBot.create(:character, homeworld: planet.id)
 
-        get person_path(character)
+        get(person_path(character), headers:)
 
         expect(response.parsed_body['planet']['name']).to eq(name)
       end
@@ -71,7 +74,7 @@ RSpec.describe 'People', type: :request do
         character = FactoryBot.create(:character, homeworld: planet.id)
         FactoryBot.create(:cast, film:, character:)
 
-        get person_path(character)
+        get(person_path(character), headers:)
 
         expect(response.parsed_body['films'].first['title']).to eq(title)
       end
@@ -79,13 +82,13 @@ RSpec.describe 'People', type: :request do
 
     context 'when the character does not exist' do
       it 'returns a 404' do
-        get person_path(1)
+        get(person_path(1), headers:)
 
         expect(response).to have_http_status(:not_found)
       end
 
       it 'returns an error message' do
-        get person_path(1)
+        get(person_path(1), headers:)
 
         expect(response.body).to eq({ error: 'Character not found' }.to_json)
       end
@@ -98,7 +101,7 @@ RSpec.describe 'People', type: :request do
         planet = FactoryBot.create(:planet)
 
         params = { character: FactoryBot.attributes_for(:character, homeworld: planet.id) }
-        post(people_path, params:)
+        post(people_path, params:, headers:)
 
         expect(response).to have_http_status(:success)
       end
@@ -107,7 +110,7 @@ RSpec.describe 'People', type: :request do
         planet = FactoryBot.create(:planet)
         params = { character: FactoryBot.attributes_for(:character, homeworld: planet.id) }
 
-        expect { post(people_path, params:) }.to change(Character, :count).by(1)
+        expect { post(people_path, params:, headers:) }.to change(Character, :count).by(1)
       end
 
       it 'returns the correct character' do
@@ -115,7 +118,7 @@ RSpec.describe 'People', type: :request do
         name = 'BB-8'
         params = { character: FactoryBot.attributes_for(:character, homeworld: planet.id, name:) }
 
-        post(people_path, params:)
+        post(people_path, params:, headers:)
 
         expect(response.parsed_body['name']).to eq(name)
       end
@@ -125,7 +128,7 @@ RSpec.describe 'People', type: :request do
       it 'returns a 422' do
         character = FactoryBot.build(:character)
 
-        post people_path, params: { character: character.attributes }
+        post(people_path, params: { character: character.attributes }, headers:)
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -133,7 +136,7 @@ RSpec.describe 'People', type: :request do
       it 'returns an error message' do
         character = FactoryBot.build(:character)
 
-        post people_path, params: { character: character.attributes }
+        post(people_path, params: { character: character.attributes }, headers:)
 
         expect(response.body).to eq({ errors: ['Homeworld can’t be blank', 'Planet must exist'] }.to_json)
       end
@@ -147,7 +150,7 @@ RSpec.describe 'People', type: :request do
         character = FactoryBot.create(:character, homeworld: planet.id)
 
         params = { character: { name: 'New Name' } }
-        put(person_path(character), params:)
+        put(person_path(character), params:, headers:)
 
         expect(response).to have_http_status(:success)
       end
@@ -157,7 +160,7 @@ RSpec.describe 'People', type: :request do
         character = FactoryBot.create(:character, homeworld: planet.id)
 
         params = { character: { name: 'New Name' } }
-        put(person_path(character), params:)
+        put(person_path(character), params:, headers:)
 
         expect(response.body).to include('New Name')
       end
@@ -169,7 +172,7 @@ RSpec.describe 'People', type: :request do
         character = FactoryBot.create(:character, homeworld: planet.id)
 
         params = { character: { name: '' } }
-        put(person_path(character), params:)
+        put(person_path(character), params:, headers:)
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -179,7 +182,7 @@ RSpec.describe 'People', type: :request do
         character = FactoryBot.create(:character, homeworld: planet.id)
 
         params = { character: FactoryBot.attributes_for(:character) }
-        put(person_path(character), params:)
+        put(person_path(character), params:, headers:)
 
         expect(response.body).to eq({ errors: ['Homeworld can’t be blank', 'Planet must exist'] }.to_json)
       end
@@ -188,14 +191,14 @@ RSpec.describe 'People', type: :request do
     context 'when the character does not exist' do
       it 'returns a 404' do
         params = { character: { name: 'New Name' } }
-        put(person_path(1), params:)
+        put(person_path(1), params:, headers:)
 
         expect(response).to have_http_status(:not_found)
       end
 
       it 'returns an error message' do
         params = { character: { name: 'New Name' } }
-        put(person_path(1), params:)
+        put(person_path(1), params:, headers:)
 
         expect(response.body).to eq({ error: 'Character not found' }.to_json)
       end
@@ -208,7 +211,7 @@ RSpec.describe 'People', type: :request do
         planet = FactoryBot.create(:planet)
         character = FactoryBot.create(:character, homeworld: planet.id)
 
-        delete person_path(character)
+        delete(person_path(character), headers:)
 
         expect(response).to have_http_status(:no_content)
       end
@@ -218,20 +221,20 @@ RSpec.describe 'People', type: :request do
         character = FactoryBot.create(:character, homeworld: planet.id)
 
         expect do
-          delete person_path(character)
+          delete person_path(character), headers:
         end.to change(Character, :count).by(-1)
       end
     end
 
     context 'when the character does not exist' do
       it 'returns a 404 when the character does not exist' do
-        delete person_path(1)
+        delete(person_path(1), headers:)
 
         expect(response).to have_http_status(:not_found)
       end
 
       it 'returns an error message when the character does not exist' do
-        delete person_path(1)
+        delete(person_path(1), headers:)
 
         expect(response.body).to eq({ error: 'Character not found' }.to_json)
       end

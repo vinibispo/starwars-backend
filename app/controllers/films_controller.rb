@@ -1,5 +1,6 @@
 class FilmsController < ApplicationController
   include Pagy::Backend
+  before_action :authenticate_user
 
   def index
     Films::Repo::List

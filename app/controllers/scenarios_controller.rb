@@ -1,4 +1,5 @@
 class ScenariosController < ApplicationController
+  before_action :authenticate_user
   def create
     Scenarios::Repo::Create
       .call(film_id: scenario_params[:film_id], planet_id: scenario_params[:planet_id])
