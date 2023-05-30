@@ -7,7 +7,7 @@ class UserMailer < ActionMailer::Base
   def forgot_password
     user = params[:user]
 
-    mail(to: user.email, subject: 'Forgot Password', host: Rails.application.credentials.app_url) do |format|
+    mail(to: user.email, subject: 'Forgot Password') do |format|
       format.html { render 'user_mailer/forgot_password', locals: { user: } }
     end
   end
