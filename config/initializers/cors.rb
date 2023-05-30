@@ -11,7 +11,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
 
     resource '*',
              headers: :any,
-             methods: [:get],
+             methods: %i[get post],
              expose: %w[Total-Count Total-Pages]
   end
 end
