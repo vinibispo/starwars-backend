@@ -43,7 +43,7 @@ The API documentation can be found at [API Documentation](DOCUMENTATION.md).
 
 The following environment variables need to be configured:
 
-- `SECRET_KEY_BASE`: 72341bc95e2cd9c137050928cfb4f337
+- `RAILS_MASTER_KEY`: 72341bc95e2cd9c137050928cfb4f337
 
 ## Development
 
