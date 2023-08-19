@@ -13,7 +13,7 @@ gem 'ransack', github: 'nlsrchtr/ransack', branch: 'fix-compatibility-with-rails
 gem 'sqlite3', '~> 1.4'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 5.6'
 
 gem 'pagy', '~> 6.0'
 
